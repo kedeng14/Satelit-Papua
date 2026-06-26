@@ -208,7 +208,7 @@
         <div class="card">
             <div class="card-header">Satelit Himawari 8 (EH) - Papua</div>
             <div class="card-body">
-                <img id="satelit-papua" src="http://202.90.198.22/IMAGE/HIMA/H08_EH_Papua.png" alt="Satelit Himawari Papua">
+                <img id="satelit-papua" src="https://202.90.198.22/IMAGE/HIMA/H08_EH_Papua.png" alt="Satelit Himawari Papua">
             </div>
             <div class="card-footer">Tipe: Citra Satelit Inframerah Terkini</div>
         </div>
@@ -216,7 +216,7 @@
         <div class="card">
             <div class="card-header">Animasi Pergerakan Awan</div>
             <div class="card-body">
-                <img id="animasi-papua" src="http://202.90.198.22/IMAGE/ANIMASI/H08_EH_Papua_m18.gif" alt="Animasi Satelit Papua">
+                <img id="animasi-papua" src="https://202.90.198.22/IMAGE/ANIMASI/H08_EH_Papua_m18.gif" alt="Animasi Satelit Papua">
             </div>
             <div class="card-footer">Tipe: Gambar Bergerak (.GIF)</div>
         </div>
@@ -224,7 +224,7 @@
         <div class="card">
             <div class="card-header">Satelit HCAI CLC - Papua</div>
             <div class="card-body">
-                <img id="satelit-hcai-clc" src="http://202.90.198.22/IMAGE/HCAI/CLC/HCAI_CLC_Papua.png" alt="Satelit HCAI CLC Papua">
+                <img id="satelit-hcai-clc" src="https://202.90.198.22/IMAGE/HCAI/CLC/HCAI_CLC_Papua.png" alt="Satelit HCAI CLC Papua">
             </div>
             <div class="card-footer">Tipe: Citra Satelit Jenis Awan</div>
         </div>
@@ -232,7 +232,7 @@
         <div class="card">
             <div class="card-header">GSMaP Curah Hujan Per Jam</div>
             <div class="card-body">
-                <img id="gsmap-hourly" src="http://202.90.198.22/IMAGE/GSMAP/Hourly_Prec.png" alt="GSMaP Curah Hujan Per Jam">
+                <img id="gsmap-hourly" src="https://202.90.198.22/IMAGE/GSMAP/Hourly_Prec.png" alt="GSMaP Curah Hujan Per Jam">
             </div>
             <div class="card-footer">Tipe: Estimasi Presipitasi Satelit (Hourly)</div>
         </div>
@@ -240,7 +240,7 @@
         <div class="card">
             <div class="card-header">GSMaP Akumulasi Curah Hujan 24 Jam</div>
             <div class="card-body">
-                <img id="gsmap-24hr" src="http://202.90.198.22/IMAGE/GSMAP/GSMaP_Precipitation_24hr_update.png" alt="GSMaP Akumulasi Curah Hujan 24 Jam">
+                <img id="gsmap-24hr" src="https://202.90.198.22/IMAGE/GSMAP/GSMaP_Precipitation_24hr_update.png" alt="GSMaP Akumulasi Curah Hujan 24 Jam">
             </div>
             <div class="card-footer">Tipe: Akumulasi Presipitasi 24 Jam</div>
         </div>
@@ -248,7 +248,7 @@
         <div class="card">
             <div class="card-header">Satelit Himawari RP - Papua</div>
             <div class="card-body">
-                <img id="himawari-rp-papua" src="http://202.90.198.22/IMAGE/HIMA/H08_RP_Papua.png" alt="Satelit Himawari RP Papua">
+                <img id="himawari-rp-papua" src="https://202.90.198.22/IMAGE/HIMA/H08_RP_Papua.png" alt="Satelit Himawari RP Papua">
             </div>
             <div class="card-footer">Tipe: Citra Satelit Potensi Hujan</div>
         </div>
@@ -256,7 +256,7 @@
         <div class="card">
             <div class="card-header">Titik Panas (Hotspot) - Papua</div>
             <div class="card-body">
-                <img id="hotspot-papua" src="http://202.90.198.22/IMAGE/HOTSPOT/Hotspot_Papua.png" alt="Hotspot Papua">
+                <img id="hotspot-papua" src="https://202.90.198.22/IMAGE/HOTSPOT/Hotspot_Papua.png" alt="Hotspot Papua">
             </div>
             <div class="card-footer">Tipe: Deteksi Kebakaran Hutan / Lahan</div>
         </div>
@@ -290,14 +290,15 @@
             const gsmap24hrImg = document.getElementById('gsmap-24hr');
             const himawariRpImg = document.getElementById('himawari-rp-papua');
 
+            // Menggunakan HTTPS:// untuk semua gambar
             radarImg.src = "https://cuaca.bmkg.go.id/data/public/sidarma/IMAGE/CMAX_Jayapura.png?t=" + timestamp;
-            satelitImg.src = "http://202.90.198.22/IMAGE/HIMA/H08_EH_Papua.png?t=" + timestamp;
-            hcaiClcImg.src = "http://202.90.198.22/IMAGE/HCAI/CLC/HCAI_CLC_Papua.png?t=" + timestamp;
-            animasiImg.src = "http://202.90.198.22/IMAGE/ANIMASI/H08_EH_Papua_m18.gif?t=" + timestamp;
-            hotspotImg.src = "http://202.90.198.22/IMAGE/HOTSPOT/Hotspot_Papua.png?t=" + timestamp;
-            gsmapHourlyImg.src = "http://202.90.198.22/IMAGE/GSMAP/Hourly_Prec.png?t=" + timestamp;
-            gsmap24hrImg.src = "http://202.90.198.22/IMAGE/GSMAP/GSMaP_Precipitation_24hr_update.png?t=" + timestamp;
-            himawariRpImg.src = "http://202.90.198.22/IMAGE/HIMA/H08_RP_Papua.png?t=" + timestamp;
+            satelitImg.src = "https://202.90.198.22/IMAGE/HIMA/H08_EH_Papua.png?t=" + timestamp;
+            hcaiClcImg.src = "https://202.90.198.22/IMAGE/HCAI/CLC/HCAI_CLC_Papua.png?t=" + timestamp;
+            animasiImg.src = "https://202.90.198.22/IMAGE/ANIMASI/H08_EH_Papua_m18.gif?t=" + timestamp;
+            hotspotImg.src = "https://202.90.198.22/IMAGE/HOTSPOT/Hotspot_Papua.png?t=" + timestamp;
+            gsmapHourlyImg.src = "https://202.90.198.22/IMAGE/GSMAP/Hourly_Prec.png?t=" + timestamp;
+            gsmap24hrImg.src = "https://202.90.198.22/IMAGE/GSMAP/GSMaP_Precipitation_24hr_update.png?t=" + timestamp;
+            himawariRpImg.src = "https://202.90.198.22/IMAGE/HIMA/H08_RP_Papua.png?t=" + timestamp;
 
             // Jika modal sedang terbuka saat refresh, perbarui juga gambar di dalam modal
             const modal = document.getElementById('zoomModal');
