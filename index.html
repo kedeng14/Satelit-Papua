@@ -195,13 +195,14 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             animation: zoomAnimation 0.25s ease-out;
             cursor: zoom-in;
-            transition: max-width 0.15s ease, max-height 0.15s ease, transform 0.15s ease;
+            /* Perubahan transisi agar perpindahan fokus origin saat klik terasa halus */
+            transition: max-width 0.15s ease, max-height 0.15s ease, transform 0.15s ease, transform-origin 0.1s ease;
         }
 
         .image-modal img.zoomed {
             max-width: none !important;
             max-height: none !important;
-            transform: scale(1.8);
+            transform: scale(2.2); /* Ditambah sedikit ke 2.2x agar wilayah yang diklik kursor terlihat semakin jelas */
             cursor: zoom-out;
             margin: 50px;
         }
@@ -356,7 +357,6 @@
             console.log("Gambar telah diperbarui pada: " + new Date().toLocaleTimeString());
         }
 
-        // FUNGSI UNTUK MENGEKSEKUSI REFRESH MANUAL DAN RESET TIMER KE 300 DETIK
         function manualRefresh() {
             refreshImages();
             countdown = REFRESH_INTERVAL;
@@ -404,19 +404,38 @@
                 modalImg.src = this.src;
                 modalImg.alt = this.alt;
                 modalImg.classList.remove('zoomed'); 
+                modalImg.style.transformOrigin = 'center center'; // Kembalikan posisi poros awal ke tengah
                 document.body.style.overflow = 'hidden'; 
             });
         });
 
+        // PERBAIKAN LOGIKA: Menghitung koordinat kursor mouse saat mengklik gambar
         modalImg.addEventListener('click', function(e) {
             e.stopPropagation(); 
-            this.classList.toggle('zoomed');
+            
+            if (!this.classList.contains('zoomed')) {
+                // Skenario Zoom-In: Hitung posisi X dan Y kursor relatif terhadap ukuran gambar saat ini
+                const rect = this.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                // Kunci poros perbesaran tepat pada area kursor Anda mengklik (misal area Sentani)
+                this.style.transformOrigin = `${x}% ${y}%`;
+                this.classList.add('zoomed');
+            } else {
+                // Skenario Zoom-Out: Kecilkan kembali dan kembalikan poros ke tengah
+                this.classList.remove('zoomed');
+                setTimeout(() => {
+                    this.style.transformOrigin = 'center center';
+                }, 150); // Tunggu animasi mengecil selesai sebelum mereset poros
+            }
         });
 
         function tutupModalFokus() {
             modal.style.display = 'none';
             modalImg.src = "";
             modalImg.classList.remove('zoomed');
+            modalImg.style.transformOrigin = 'center center';
             document.body.style.overflow = ''; 
         }
 
