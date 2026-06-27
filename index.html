@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dasbor Pemantauan Citra Satelit & Radar Papua</title>
     <style>
         :root {
@@ -41,6 +41,7 @@
             font-size: 0.9rem;
         }
 
+        /* Gaya tambahan untuk penampil jam */
         .time-container {
             display: flex;
             justify-content: center;
@@ -62,6 +63,7 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
+        /* Mengatur tata letak kotak gambar (Grid dikunci 4 kolom untuk layar desktop) */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -71,18 +73,20 @@
             flex-grow: 1;
         }
 
+        /* PERUBAHAN TATA LETAK KHUSUS HP (MENJADI 1 BARIS MEMANJANG KE BAWAH) */
         @media (max-width: 1024px) {
             .dashboard-grid {
-                grid-template-columns: 1fr;
-                max-width: 600px;
+                grid-template-columns: 1fr; /* Memaksa hanya ada 1 kolom saja di layar HP */
+                max-width: 600px; /* Membatasi lebar kotak agar pas di genggaman ponsel */
             }
             .time-container {
-                flex-direction: column;
+                flex-direction: column; /* Mengubah posisi jam atas-bawah agar pas di layar HP */
                 gap: 10px;
                 align-items: center;
             }
         }
 
+        /* Desain kotak komponen */
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -317,10 +321,15 @@
         function updateClock() {
             const now = new Date();
             
-            // Format Waktu Lokal perangkat pengguna
-            const localOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            const timeZoneName = now.toLocaleDateString(undefined, { timeZoneName: 'short' }).split(', ')[1] || 'Lokal';
-            document.getElementById('local-time').textContent = now.toLocaleTimeString('id-ID', localOptions) + ' ' + timeZoneName;
+            // PERBAIKAN: Memaksa format jam lokal untuk selalu mengunci zona waktu Papua (WIT)
+            const localOptions = { 
+                timeZone: 'Asia/Jayapura', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: false 
+            };
+            document.getElementById('local-time').textContent = now.toLocaleTimeString('id-ID', localOptions) + ' WIT';
 
             // Format Waktu UTC
             const utcTimeStr = now.getUTCHours().toString().padStart(2, '0') + ':' + 
