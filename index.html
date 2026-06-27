@@ -62,28 +62,6 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        /* GAYA TOMBOL REFRESH TAMBAHAN */
-        .refresh-btn {
-            background-color: var(--accent-color);
-            color: #0f172a;
-            border: none;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-
-        .refresh-btn:hover {
-            opacity: 0.9;
-        }
-
-        .refresh-btn:active {
-            transform: scale(0.95);
-        }
-
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -180,20 +158,46 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.9);
+            background-color: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
-            cursor: zoom-out;
+            overflow: auto; /* Mengaktifkan scrollbar otomatis saat gambar meluas */
         }
 
         .image-modal img {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 95%;
+            max-height: 95%;
             object-fit: contain;
             border-radius: 8px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             animation: zoomAnimation 0.25s ease-out;
+            cursor: zoom-in; /* Kursor awal berbentuk (+) tanda ingin memperbesar */
+            transition: max-width 0.15s ease, max-height 0.15s ease, transform 0.15s ease;
+        }
+
+        /* GAYA BARU: Ketika gambar di dalam modal diklik di laptop, copot pembatasan ukurannya */
+        .image-modal img.zoomed {
+            max-width: none !important;
+            max-height: none !important;
+            transform: scale(1.8); /* Perbesar gambar sebanyak 1.8 kali lipat dari aslinya */
+            cursor: zoom-out; /* Kursor berubah jadi (-) tanda siap memperkecil */
+            margin: 50px; /* Jarak aman tepi saat digulir */
+        }
+
+        .close-modal-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
         }
 
         @keyframes zoomAnimation {
@@ -214,7 +218,6 @@
         </div>
 
         <p id="refresh-timer">Memperbarui gambar otomatis dalam: <span id="countdown">300</span> detik</p>
-        <button class="refresh-btn" onclick="manualRefresh()">Refresh Gambar</button>
     </header>
 
     <main class="dashboard-grid">
@@ -287,9 +290,10 @@
 
     <footer class="main-footer">
         <p>Developed by <span>Kedeng V</span></p>
-    </footer
+    </footer>
 
     <div id="zoomModal" class="image-modal">
+        <button class="close-modal-btn" id="closeModalBtn">✕</button>
         <img id="modalImg" src="" alt="Zoomed Image">
     </div>
 
@@ -330,13 +334,6 @@
             console.log("Gambar telah diperbarui pada: " + new Date().toLocaleTimeString());
         }
 
-        // FUNGSI UNTUK MENGEKSEKUSI REFRESH MANUAL DAN RESET TIMER KE 300 DETIK
-        function manualRefresh() {
-            refreshImages();
-            countdown = REFRESH_INTERVAL;
-            countdownElement.textContent = countdown;
-        }
-
         function updateClock() {
             const now = new Date();
             
@@ -347,7 +344,7 @@
                 second: '2-digit', 
                 hour12: false 
             };
-            document.getElementById('local-time').textContent = now.toLocaleTimeString('id-ID', localOptions) + ' ' + 'WIT';
+            document.getElementById('local-time').textContent = now.toLocaleTimeString('id-ID', localOptions) + ' WIT';
 
             const utcTimeStr = now.getUTCHours().toString().padStart(2, '0') + ':' + 
                                now.getUTCMinutes().toString().padStart(2, '0') + ':' + 
@@ -359,6 +356,7 @@
             updateClock();
             countdown--;
             countdownElement.textContent = countdown;
+            
             if (countdown <= 0) {
                 refreshImages();
                 countdown = REFRESH_INTERVAL;
@@ -367,22 +365,42 @@
 
         updateClock();
 
+        // LOGIKA BARU: ZOOM KLIK LAPTOP & RESPONSINF SENTUHAN HP
         const modal = document.getElementById('zoomModal');
         const modalImg = document.getElementById('modalImg');
         const images = document.querySelectorAll('.card-body img');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
         images.forEach(img => {
             img.addEventListener('click', function() {
                 modal.style.display = 'flex';
                 modalImg.src = this.src;
                 modalImg.alt = this.alt;
+                modalImg.classList.remove('zoomed'); // Pastikan posisi awal tidak langsung super besar
+                document.body.style.overflow = 'hidden'; 
             });
         });
 
-        modal.addEventListener('click', function() {
+        // Ketika gambar di dalam modal diklik, toggle pembesaran (zoom-in / zoom-out)
+        modalImg.addEventListener('click', function(e) {
+            e.stopPropagation(); // Mencegah modal langsung menutup saat gambar diklik
+            this.classList.toggle('zoomed');
+        });
+
+        function tutupModalFokus() {
             modal.style.display = 'none';
             modalImg.src = "";
+            modalImg.classList.remove('zoomed');
+            document.body.style.overflow = ''; 
+        }
+
+        closeModalBtn.addEventListener('click', tutupModalFokus);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                tutupModalFokus();
+            }
         });
     </script>
+
 </body>
 </html>
